@@ -22,12 +22,12 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // User::factory()->create([
-        //     'name' => 'keth',
-        //     'email' => 'keth@gmail.com',
-        //     'password' => Hash::make('kenkanekiTouka123'),
-        //     'email_verified_at' => now(),
+        User::factory()->create([
+            'name' => 'keth',
+            'email' => 'keth@gmail.com',
+            'password' => Hash::make('kenkanekiTouka123'),
+            'email_verified_at' => now(),
 
-        // ]);
+        ]);
     }
 }
