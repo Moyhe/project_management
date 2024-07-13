@@ -1,3 +1,4 @@
+import Pagination from "@/Components/Pagination";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Project } from "@/types/project";
 import { Head, Link } from "@inertiajs/react";
@@ -7,7 +8,7 @@ interface Props {
 }
 
 const index = ({ projects }: Props) => {
-    console.log("projects", projects.data);
+    console.log("projects", projects.meta.links);
 
     return (
         <AuthenticatedLayout
@@ -114,6 +115,7 @@ const index = ({ projects }: Props) => {
                                     </tbody>
                                 </table>
                             </div>
+                            <Pagination links={projects.meta.links} />
                         </div>
                     </div>
                 </div>
