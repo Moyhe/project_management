@@ -1,6 +1,6 @@
 import { User } from ".";
 
-interface Projects {
+export interface Projects {
   id: number;
   name: string;
   description: string;
@@ -16,6 +16,10 @@ export interface Links {
   url: string;
   active: boolean;
   label: string;
+}
+
+export interface ShowProject {
+  data: Projects;
 }
 
 export interface Project {
