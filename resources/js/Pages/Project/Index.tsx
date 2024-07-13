@@ -1,14 +1,37 @@
 import Pagination from "@/Components/Pagination";
+import SelectInput from "@/Components/SelectInput";
+import TextInput from "@/Components/TextInput";
+import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/Constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Project } from "@/types/project";
-import { Head, Link } from "@inertiajs/react";
+import { QueryParams } from "@/types/queryParams";
+import { Head, Link, router } from "@inertiajs/react";
 
 interface Props {
     projects: Project;
+    queryParams: QueryParams;
 }
 
-const index = ({ projects }: Props) => {
-    console.log("projects", projects.meta.links);
+const index = ({ projects, queryParams }: Props) => {
+    queryParams = queryParams || {};
+    const searchFiledInput = (
+        name: keyof typeof queryParams,
+        value: string
+    ) => {
+        if (value) {
+            queryParams[name] = value;
+        } else {
+            delete queryParams[name];
+        }
+
+        router.get(route("project.index"), queryParams as {});
+    };
+
+    const search = (name: keyof typeof queryParams, event: any) => {
+        if (event.key !== "Enter") return;
+
+        searchFiledInput(name, event.target.value);
+    };
 
     return (
         <AuthenticatedLayout
@@ -53,6 +76,51 @@ const index = ({ projects }: Props) => {
                                         <tr className="text-nowrap">
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3">
+                                                <TextInput
+                                                    defaultValue={
+                                                        queryParams.name
+                                                    }
+                                                    className="w-full"
+                                                    placeholder="Project Name"
+                                                    onBlur={(event) =>
+                                                        searchFiledInput(
+                                                            "name",
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                    onKeyUp={(event) =>
+                                                        search("name", event)
+                                                    }
+                                                />
+                                            </th>
+                                            <th className="px-3 py-3">
+                                                <SelectInput
+                                                    defaultValue={
+                                                        queryParams.status
+                                                    }
+                                                    onChange={(event) =>
+                                                        searchFiledInput(
+                                                            "status",
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                    className="w-full cursor-pointer"
+                                                >
+                                                    <option value="">
+                                                        Select Status
+                                                    </option>
+                                                    <option value="pending">
+                                                        Pending
+                                                    </option>
+                                                    <option value="in_progress">
+                                                        In Progress
+                                                    </option>
+                                                    <option value="completed">
+                                                        Completed
+                                                    </option>
+                                                </SelectInput>
+                                            </th>
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3"></th>
@@ -78,7 +146,20 @@ const index = ({ projects }: Props) => {
                                                     {project.name}
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    {project.status}
+                                                    <span
+                                                        className={
+                                                            "px-2 py-1 rounded text-white " +
+                                                            PROJECT_STATUS_CLASS_MAP[
+                                                                project.status
+                                                            ]
+                                                        }
+                                                    >
+                                                        {
+                                                            PROJECT_STATUS_TEXT_MAP[
+                                                                project.status
+                                                            ]
+                                                        }
+                                                    </span>
                                                 </td>
                                                 <td className="px-3 py-2 text-nowrap">
                                                     {project.created_at}
