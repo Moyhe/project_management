@@ -7,6 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Project } from "@/types/project";
 import { QueryParams } from "@/types/queryParams";
 import { Head, Link, router } from "@inertiajs/react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
     projects: Project;
@@ -56,12 +57,25 @@ const index = ({ projects, queryParams, success }: Props) => {
         router.delete(route("project.destroy", projectId));
     };
 
+    const ref = useRef(null);
+
+    const [localSuccess, setSuccess] = useState("");
+
+    useEffect(() => {
+        setSuccess(success);
+        setTimeout(() => {
+            if (ref.current) {
+                ref.current;
+            }
+        }, 3000);
+    }, [success]);
+
     return (
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Tasks
+                        Projects
                     </h2>
                     <Link
                         href={route("project.create")}
@@ -76,9 +90,12 @@ const index = ({ projects, queryParams, success }: Props) => {
 
             <div className="py-12">
                 <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
-                    {success && (
-                        <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
-                            {success}
+                    {localSuccess && (
+                        <div
+                            ref={ref}
+                            className="bg-emerald-500 py-2 px-4 text-white rounded mb-4"
+                        >
+                            {localSuccess}
                         </div>
                     )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
