@@ -11,9 +11,10 @@ import { Head, Link, router } from "@inertiajs/react";
 interface Props {
     projects: Project;
     queryParams: QueryParams;
+    success: string;
 }
 
-const index = ({ projects, queryParams }: Props) => {
+const index = ({ projects, queryParams, success }: Props) => {
     queryParams = queryParams || {};
     const searchFiledInput = (
         name: keyof typeof queryParams,
@@ -48,18 +49,38 @@ const index = ({ projects, queryParams }: Props) => {
         router.get(route("project.index"), queryParams as {});
     };
 
+    const deleteProject = (projectId: number) => {
+        if (!window.confirm("Are you sure you want to delete the project?")) {
+            return;
+        }
+        router.delete(route("project.destroy", projectId));
+    };
+
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Projects
-                </h2>
+                <div className="flex items-center justify-between">
+                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        Tasks
+                    </h2>
+                    <Link
+                        href={route("project.create")}
+                        className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                    >
+                        Add new
+                    </Link>
+                </div>
             }
         >
             <Head title="Projects" />
 
             <div className="py-12">
                 <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
+                    {success && (
+                        <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
+                            {success}
+                        </div>
+                    )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
@@ -162,7 +183,7 @@ const index = ({ projects, queryParams }: Props) => {
                                             </th>
                                             <th className="px-3 py-3">
                                                 <SelectInput
-                                                    className="w-full"
+                                                    className="w-full cursor-pointer"
                                                     defaultValue={
                                                         queryParams.status
                                                     }
@@ -208,9 +229,16 @@ const index = ({ projects, queryParams }: Props) => {
                                                         style={{ width: 60 }}
                                                     />
                                                 </td>
-                                                <td className="px-3 py-2">
-                                                    {project.name}
-                                                </td>
+                                                <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                    <Link
+                                                        href={route(
+                                                            "project.show",
+                                                            project.id
+                                                        )}
+                                                    >
+                                                        {project.name}
+                                                    </Link>
+                                                </th>
                                                 <td className="px-3 py-2">
                                                     <span
                                                         className={
@@ -247,15 +275,16 @@ const index = ({ projects, queryParams }: Props) => {
                                                     >
                                                         Edit
                                                     </Link>
-                                                    <Link
-                                                        href={route(
-                                                            "project.edit",
-                                                            project.id
-                                                        )}
+                                                    <button
+                                                        onClick={() =>
+                                                            deleteProject(
+                                                                project.id
+                                                            )
+                                                        }
                                                         className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                                     >
                                                         Delete
-                                                    </Link>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}

@@ -9,6 +9,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 use function Pest\Laravel\json;
@@ -119,6 +120,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $name = $project->name;
+        $project->delete();
+        if ($project->image) {
+            Storage::disk('public')->deleteDirectory(dirname($project->image));
+        }
+        return to_route('project.index')
+            ->with('success', "Project \"$name\" was deleted");
     }
 }
