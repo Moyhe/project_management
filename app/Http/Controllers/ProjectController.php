@@ -8,6 +8,8 @@ use App\Http\Resources\ProjectCollection;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 
+use function Pest\Laravel\json;
+
 class ProjectController extends Controller
 {
     /**
@@ -17,10 +19,22 @@ class ProjectController extends Controller
     {
         $query = Project::query();
 
-        $projects = $query->paginate(10);
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request('name')) {
+            $query->where('name', 'like', '%' . request('name') . '%');
+        }
+
+        if (request('status')) {
+            $query->where('status', 'like', '%' . request('status') . '%');
+        }
+
+        $projects = $query->orderBy($sortField, $sortDirection)->paginate(10);
 
         return inertia('Project/Index', [
-            'projects' => ProjectResource::collection($projects)
+            'projects' => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?: null,
         ]);
     }
 

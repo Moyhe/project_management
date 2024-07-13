@@ -1,5 +1,6 @@
 import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
+import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/Constants";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -33,6 +34,20 @@ const index = ({ projects, queryParams }: Props) => {
         searchFiledInput(name, event.target.value);
     };
 
+    const sortChanged = (name: string) => {
+        if (name === queryParams.sort_field) {
+            if (queryParams.sort_direction === "asc") {
+                queryParams.sort_direction = "desc";
+            } else {
+                queryParams.sort_direction = "asc";
+            }
+        } else {
+            queryParams.sort_field = name;
+            queryParams.sort_direction = "asc";
+        }
+        router.get(route("project.index"), queryParams as {});
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -44,29 +59,80 @@ const index = ({ projects, queryParams }: Props) => {
             <Head title="Projects" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
-                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <table className="w-full text-sm  text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr className="text-nowrap">
-                                            <th className="px-3 py-3">ID</th>
+                                            <TableHeading
+                                                name="id"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                ID
+                                            </TableHeading>
                                             <th className="px-3 py-3">Image</th>
-                                            <th className="px-3 py-3">Name</th>
-                                            <th className="px-3 py-3">
-                                                status
-                                            </th>
-                                            <th className="px-3 py-3">
-                                                Created Date
-                                            </th>
+                                            <TableHeading
+                                                name="name"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Name
+                                            </TableHeading>
+
+                                            <TableHeading
+                                                name="status"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Status
+                                            </TableHeading>
+
+                                            <TableHeading
+                                                name="created_at"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Create Date
+                                            </TableHeading>
+
+                                            <TableHeading
+                                                name="due_date"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Due Date
+                                            </TableHeading>
                                             <th className="px-3 py-3">
                                                 Created By
                                             </th>
-                                            <th className="px-3 py-3">
-                                                Due Date
-                                            </th>
-
                                             <th className="px-3 py-3 text-right">
                                                 Actions
                                             </th>
@@ -78,10 +144,10 @@ const index = ({ projects, queryParams }: Props) => {
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3">
                                                 <TextInput
+                                                    className="w-full"
                                                     defaultValue={
                                                         queryParams.name
                                                     }
-                                                    className="w-full"
                                                     placeholder="Project Name"
                                                     onBlur={(event) =>
                                                         searchFiledInput(
@@ -96,6 +162,7 @@ const index = ({ projects, queryParams }: Props) => {
                                             </th>
                                             <th className="px-3 py-3">
                                                 <SelectInput
+                                                    className="w-full"
                                                     defaultValue={
                                                         queryParams.status
                                                     }
@@ -105,7 +172,6 @@ const index = ({ projects, queryParams }: Props) => {
                                                             event.target.value
                                                         )
                                                     }
-                                                    className="w-full cursor-pointer"
                                                 >
                                                     <option value="">
                                                         Select Status
