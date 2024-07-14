@@ -4,7 +4,7 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
-import { PageProps, User } from "@/types";
+import { PageProps } from "@/types";
 
 export default function Authenticated({
     header,
@@ -42,6 +42,12 @@ export default function Authenticated({
                                 >
                                     Projects
                                 </NavLink>
+                                <NavLink
+                                    href={route("user.index")}
+                                    active={route().current("user.index")}
+                                >
+                                    Users
+                                </NavLink>
 
                                 <NavLink
                                     href={route("task.index")}
@@ -51,10 +57,10 @@ export default function Authenticated({
                                 </NavLink>
 
                                 <NavLink
-                                    href={route("user.index")}
-                                    active={route().current("user.index")}
+                                    href={route("task.myTasks")}
+                                    active={route().current("task.myTasks")}
                                 >
-                                    Users
+                                    My Tasks
                                 </NavLink>
                             </div>
                         </div>
