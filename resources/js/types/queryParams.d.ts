@@ -3,4 +3,5 @@ export interface QueryParams {
   status: string;
   sort_field: string;
   sort_direction: string;
+  email: string;
 }
