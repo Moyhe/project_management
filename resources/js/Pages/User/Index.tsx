@@ -207,8 +207,15 @@ const index = ({ users, queryParams, success }: Props) => {
                                                 <td className="px-3 py-2">
                                                     {user.id}
                                                 </td>
-                                                <th className="px-3 py-2 text-gray-100 text-nowrap">
-                                                    {user.name}
+                                                <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                    <Link
+                                                        href={route(
+                                                            "user.show",
+                                                            user.id
+                                                        )}
+                                                    >
+                                                        {user.name}
+                                                    </Link>
                                                 </th>
                                                 <td className="px-3 py-2">
                                                     {user.email}

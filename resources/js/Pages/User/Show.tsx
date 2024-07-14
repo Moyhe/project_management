@@ -1,7 +1,5 @@
 import { Head } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { ShowProject } from "@/types/project";
-import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/Constants";
 import TasksTable from "@/Components/TasksTable";
 import { Task } from "@/types/task";
 import { QueryParams } from "@/types/queryParams";
