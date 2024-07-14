@@ -46,6 +46,14 @@ const TasksTable = ({ tasks, queryParams, hide = false }: Props) => {
         }
         router.get(route("task.index"), queryParams as {});
     };
+
+    const deleteTask = (TaskId: number) => {
+        if (!window.confirm("Are you sure you want to delete the task?")) {
+            return;
+        }
+        router.delete(route("task.destroy", TaskId));
+    };
+
     return (
         <>
             <div className="overflow-auto">
@@ -144,6 +152,7 @@ const TasksTable = ({ tasks, queryParams, hide = false }: Props) => {
                             <th className="px-3 py-3"></th>
                             <th className="px-3 py-3"></th>
                             <th className="px-3 py-3"></th>
+                            <th className="px-3 py-3"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -165,7 +174,7 @@ const TasksTable = ({ tasks, queryParams, hide = false }: Props) => {
                                     </td>
                                 )}
                                 <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                                    <Link href={route("project.show", task.id)}>
+                                    <Link href={route("task.show", task.id)}>
                                         {task.name}
                                     </Link>
                                 </th>
@@ -191,17 +200,17 @@ const TasksTable = ({ tasks, queryParams, hide = false }: Props) => {
 
                                 <td className="px-3 py-2 text-nowrap">
                                     <Link
-                                        href={route("project.edit", task.id)}
+                                        href={route("task.edit", task.id)}
                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                     >
                                         Edit
                                     </Link>
-                                    <Link
-                                        href={route("project.edit", task.id)}
+                                    <button
+                                        onClick={(e) => deleteTask(task.id)}
                                         className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                     >
                                         Delete
-                                    </Link>
+                                    </button>
                                 </td>
                             </tr>
                         ))}
