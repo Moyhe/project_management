@@ -6,7 +6,7 @@ Full Stack Project Management SPA with react 18, typescript, tailwindcss, inerti
 
 ## Demo
 
-comming soon
+[Video](https://drive.google.com/file/d/1O0_N2KmXWKwMR16y6CN2kBhEM1jbaXGk/view?usp=sharing)
 
 ## Installation with docker
 
