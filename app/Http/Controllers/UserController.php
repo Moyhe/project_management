@@ -45,7 +45,28 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $query = $user->tasks();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("status")) {
+            $query->where("status", "like", "%" . request("status") . "%");
+        }
+
+        $tasks = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia('User/Show', [
+            'user' => new UserCrudResource($user),
+            'tasks' => TaskResource::collection($tasks),
+            'queryParams' => request()->query() ?: null,
+
+        ]);
     }
 
     /**
