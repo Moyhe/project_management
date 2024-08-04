@@ -19,7 +19,7 @@ const TableHeading = ({
     sortChanged,
 }: Props) => {
     return (
-        <th onClick={(e) => sortChanged(name)}>
+        <th onClick={() => sortChanged(name)}>
             <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
                 {children}
                 {sortable && (

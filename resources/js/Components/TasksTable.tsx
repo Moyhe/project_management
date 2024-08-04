@@ -12,6 +12,7 @@ interface Props {
     queryParams: QueryParams;
     hide: boolean;
 }
+
 const TasksTable = ({ tasks, queryParams, hide = false }: Props) => {
     queryParams = queryParams || {};
     const searchFiledInput = (
