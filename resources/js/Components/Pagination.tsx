@@ -21,7 +21,9 @@ const Pagination = ({ links }: Props) => {
                             : "hover:bg-gray-950")
                     }
                     dangerouslySetInnerHTML={{ __html: link.label }}
-                ></Link>
+                >
+                    
+                </Link>
             ))}
         </nav>
     );
